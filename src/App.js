@@ -5,12 +5,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {data: [], countries: [], answer: undefined, won: false, clicked: false, clickedIndex: undefined};
+    this.crossOriginUrl = "https://cors-anywhere.herokuapp.com/";
     this.handleClick = this.handleClick.bind(this);
   }
   
   componentDidMount() {
     let countriesUrl = 'http://restcountries.eu/rest/v2/all';
-    fetch(countriesUrl)
+    fetch((this.crossOriginUrl + countriesUrl))
       .then(data => data.json())
       .then(data => {
         this.handleData(data);
@@ -60,7 +61,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="header">
-          <img src="http://freeassembly.net/wp-content/uploads/2016/02/New-world-map-header-1.jpg" alt="header"/>
+          <img src={this.crossOriginUrl + "http://freeassembly.net/wp-content/uploads/2016/02/New-world-map-header-1.jpg"} alt="header"/>
         </div>
         <h1>The Flag Guessing Game</h1>
         {views}
