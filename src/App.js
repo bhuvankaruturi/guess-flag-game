@@ -4,7 +4,7 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {data: [], countries: [], answer: undefined, won: false, clicked: false, clickedIndex: undefined};
+    this.state = {data: [], countries: [], answer: undefined, won: false, clicked: false, clickedIndex: undefined, score: 0, played: 0};
     this.crossOriginUrl = "https://cors-anywhere.herokuapp.com/";
     this.handleClick = this.handleClick.bind(this);
   }
@@ -33,10 +33,11 @@ class App extends Component {
    
   handleClick(e){
     if (!this.state.clicked) {
+      let {score, played} = this.state;
       if (Number(e.target.value) === this.state.answer) {
-        this.setState({won: true, clicked: true, clickedIndex: e.target.value});
+        this.setState({won: true, clicked: true, clickedIndex: e.target.value, score: score + 1, played: played + 1});
       } else {
-        this.setState({won: false, clicked: true, clickedIndex: Number(e.target.value)});
+        this.setState({won: false, clicked: true, clickedIndex: Number(e.target.value), played: played + 1});
       }
     }
   }
@@ -45,7 +46,9 @@ class App extends Component {
     let views = [<div key="1">Loading...</div>];
     let image = undefined;
     let status = undefined;
-    const {data, countries, answer, won, clicked, clickedIndex} = this.state;
+    let stats = undefined;
+    let button = undefined;
+    const {data, countries, answer, won, clicked, clickedIndex, score, played} = this.state;
     if(data && data.length > 0) {
       views = countries.map((country, i) => {
           return (<label key={i}>
@@ -53,7 +56,9 @@ class App extends Component {
                     {country.name}
                   </label>);
       });
+      stats = <p className="score">Played: <strong>{played}</strong> | Score: <strong>{score}</strong></p>;
       image = <img src={countries[answer].flag} alt="country flag"/>;
+      button = <button type="button" onClick={() => this.handleData(data)}>Next</button>;
       if(clicked) {
          status = won?<p><strong>You won</strong></p>:<p><strong>You Lost.</strong> Answer: {countries[answer].name}</p>;
       }
@@ -61,11 +66,14 @@ class App extends Component {
     return (
       <div className="App">
         <div className="header">
-          <img src={this.crossOriginUrl + "http://freeassembly.net/wp-content/uploads/2016/02/New-world-map-header-1.jpg"} alt="header"/>
+          <img src={"http://freeassembly.net/wp-content/uploads/2016/02/New-world-map-header-1.jpg"} alt="header"/>
         </div>
-        <h1>The Flag Guessing Game</h1>
-        {views}
-        <button type="button" onClick={() => this.handleData(data)}>Next</button>
+        <h1 className="centered">The Flag Guessing Game</h1>
+        {stats}
+        <div className="labels">
+          {views}
+          {button}
+        </div>
         {status}
         {image}
       </div>
