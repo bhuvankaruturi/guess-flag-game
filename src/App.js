@@ -66,7 +66,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="header">
-          <img src={"http://freeassembly.net/wp-content/uploads/2016/02/New-world-map-header-1.jpg"} alt="header"/>
+          <img src={"https://i.pinimg.com/originals/91/4c/7e/914c7e91d5f010e172f11c2a15520637.png"} alt="header"/>
         </div>
         <h1 className="centered">The Flag Guessing Game</h1>
         {stats}
